@@ -8,12 +8,15 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
+/**
+ * Created by Asadchiy Pavel
+ * on 15.12.15.
+ */
 public class MulticastClient implements Runnable {
     public static final Logger LOG = Logger.getLogger(MulticastClient.class.getName());
 
     private final String address;
     private final int port;
-    private InetAddress myInetAddress;
 
     public MulticastClient(String address, int port) {
         this.address = address;
@@ -24,9 +27,9 @@ public class MulticastClient implements Runnable {
     @Override
     public void run() {
         InetAddress inetAddress;
+        InetAddress firstAddress;
         try {
-            inetAddress = InetAddress.getByName(address);
-            myInetAddress = inetAddress;
+            firstAddress = inetAddress = InetAddress.getByName(address);
         } catch (UnknownHostException e) {
             LOG.severe("Client: can't get InetAddress from address = " + address);
             return;
@@ -73,7 +76,7 @@ public class MulticastClient implements Runnable {
                 if (address != null) {
                     try {
                         if (address.startsWith(Main.DEFAULT_ADDRESS_1)) {
-                            inetAddress = myInetAddress;
+                            inetAddress = firstAddress;
                         } else {
                             inetAddress = InetAddress.getByName(address);
                         }
